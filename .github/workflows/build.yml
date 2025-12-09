@@ -28,8 +28,6 @@ jobs:
           target: ${{ matrix.target }}
       - uses: geode-sdk/build-action@v1
         id: geode
-        
-        id: geode
         with:
           target: ${{ matrix.target }}
           
