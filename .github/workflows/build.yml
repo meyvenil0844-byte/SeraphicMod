@@ -11,16 +11,14 @@ jobs:
       matrix:
         target: [Win, Mac, Android64] # Use capitalized names for artifacts
     
-    runs-on: ubuntu-latest
-
-    steps:
+        runs-on: ubuntu-latest
+    
+    steps: # Correct indentation and no leading empty lines
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Ensures a full, clean history pull
           clean: true    # Forces removal of any stale files from previous runs
           
-    
-      
       - name: Configure Git
         run: git config --global url."https://github.com/".insteadOf "git@github.com:"
         
@@ -33,7 +31,6 @@ jobs:
           TARGET_LOWERCASE=$(echo "${{ matrix.target }}" | tr '[:upper:]' '[:lower:]')
           ./build-tools/build.sh $TARGET_LOWERCASE
           
-
       - name: Find Output Path
         id: find_path
         run: |
@@ -45,5 +42,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: SeraphicMod-${{ matrix.target }}
-          path: build/SeraphicMod.geode # Adjust path if needed, but this is standard
+          path: build/SeraphicMod.geode
           
