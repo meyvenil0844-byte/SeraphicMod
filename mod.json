@@ -1,0 +1,17 @@
+{
+    "id": "seraphic.difficulties",
+    "name": "Seraphic Difficulties",
+    "developer": "YourName",
+    "version": "1.0.0",
+    "gd": {
+        "from": "2.200",
+        "to": "2.299"
+    },
+    "dependencies": [
+        {
+            "id": "geode.texture-loader",
+            "version": ">=1.0.0",
+            "required": true
+        }
+    ]
+}
