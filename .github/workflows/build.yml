@@ -13,8 +13,13 @@ jobs:
     
     runs-on: ubuntu-latest
 
-    steps:
+       steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Ensures a full, clean history pull
+          clean: true    # Forces removal of any stale files from previous runs
+          
+    
       
       - name: Configure Git
         run: git config --global url."https://github.com/".insteadOf "git@github.com:"
