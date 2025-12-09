@@ -23,8 +23,11 @@ jobs:
         run: git clone --recursive https://github.com/geode-sdk/build-tools.git
 
       - name: Compile Mod
-        # This calls the build script directly for the target platform
-        run: ./build-tools/build.sh ${{ matrix.target }}
+        # The build script expects lowercase targets (win, mac, android64)
+        run: |
+          TARGET_LOWERCASE=$(echo "${{ matrix.target }}" | tr '[:upper:]' '[:lower:]')
+          ./build-tools/build.sh $TARGET_LOWERCASE
+          
 
       - name: Find Output Path
         id: find_path
