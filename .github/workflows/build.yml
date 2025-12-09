@@ -1,4 +1,4 @@
-name: Build Geode Mod
+name: Build Geode Mod (Manual)
 
 on:
   push:
@@ -9,21 +9,33 @@ jobs:
   build:
     strategy:
       matrix:
-        target: [win, mac, android64]
+        target: [Win, Mac, Android64] # Use capitalized names for artifacts
     
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Install Dependencies
+        run: sudo apt-get update && sudo apt-get install -y git cmake g++ libcurl4-openssl-dev
 
-      # Use the consolidated Geode Build Action
-      - uses: geode-sdk/geode-build-action@v1
-        id: geode
+      - name: Download Geode Build Tools
+        run: git clone --recursive https://github.com/geode-sdk/build-tools.git
+
+      - name: Compile Mod
+        # This calls the build script directly for the target platform
+        run: ./build-tools/build.sh ${{ matrix.target }}
+
+      - name: Find Output Path
+        id: find_path
+        run: |
+          # The build script places the output in the build folder
+          MOD_PATH=$(find ./build -name '*.geode')
+          echo "mod-path=$MOD_PATH" >> $GITHUB_OUTPUT
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
-          target: ${{ matrix.target }}
-          
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ${{ github.event.repository.name }}-${{ matrix.target }}
-          path: ${{ steps.geode.outputs.mod-path }}
+          name: SeraphicMod-${{ matrix.target }}
+          path: build/SeraphicMod.geode # Adjust path if needed, but this is standard
           
