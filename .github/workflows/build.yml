@@ -16,14 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Install Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential cmake git curl
-          
+      - name: Configure Git
+        run: git config --global url."https://".insteadOf git://
 
       - name: Download Geode Build Tools
-        run: git clone --recursive https://github.com/geode-sdk/build-tools.git
+        run: git clone --recursive https://github.com/geode-sdk/build-tools.git      
 
       - name: Compile Mod
         # The build script expects lowercase targets (win, mac, android64)
