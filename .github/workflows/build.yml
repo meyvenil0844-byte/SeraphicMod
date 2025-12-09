@@ -2,37 +2,28 @@ name: Build Geode Mod
 
 on:
   push:
-    branches:
-      - main # or master
+    branches: [main, master]
   workflow_dispatch:
 
 jobs:
   build:
     strategy:
       matrix:
-        include:
-          - name: windows-latest
-            platform: Win
-            target: win
-          - name: macos-latest
-            platform: MacOS
-            target: mac
-          - name: ubuntu-latest
-            platform: Android
-            target: android64
-    runs-on: ${{ matrix.name }}
+        target: [win, mac, android64]
+    
+    runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      - uses: geode-sdk/setup-action@v1
-        with:
-          target: ${{ matrix.target }}
-      - uses: geode-sdk/build-action@v1
+
+      # Use the consolidated Geode Build Action
+      - uses: geode-sdk/geode-build-action@v1
         id: geode
         with:
           target: ${{ matrix.target }}
           
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ github.event.repository.name }}-${{ matrix.platform }}
+          name: ${{ github.event.repository.name }}-${{ matrix.target }}
           path: ${{ steps.geode.outputs.mod-path }}
           
